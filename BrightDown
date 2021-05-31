@@ -1,0 +1,8 @@
+#!/bin/sh
+#Check whether brightness value lies within limit, proceed if true
+if [ $(echo "$(xrandr --verbose | grep "Brightness" | awk '{print$2}') > 0.3" | bc -l) -eq 1 ]; then
+xrandr --output $(echo "$(xrandr | grep " connected" | awk '{print$1}')") --brightness $(echo "$(xrandr --verbose | grep "Brightness" | awk '{print$2-0.1}')")
+#Replace value for startup restore
+sed -i /Brightness/d ~/.session
+echo "Brightness=$(xrandr --verbose | grep "Brightness" | awk '{print$2}')">>~/.session
+fi
